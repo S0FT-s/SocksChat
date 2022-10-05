@@ -2,7 +2,6 @@
 import socket 
 from threading import *
 
-
 Host = '127.0.0.1'
 Port = 1234
 Clients_names = []
@@ -12,6 +11,8 @@ id_List = []
 
 ServerSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 ServerSocket.bind((Host,Port))
+
+
 
 def Client_Handler(conn, addr):
     #o client vai mandar o seu nome primeiro e depois sim pode começar o chat
@@ -32,8 +33,8 @@ def Client_Handler(conn, addr):
 def ServerStart():
     ServerSocket.listen(5)
     print("Server is now listening")
-    conn, addr = ServerSocket.accept()
-    th1 = Thread(target=Client_Handler, args=(conn,addr))
-    th1.start()
-    
+    while True:
+        conn, addr = ServerSocket.accept()
+        th1 = Thread(target=Client_Handler, args=(conn,addr))
+        th1.start()    
 ServerStart()
