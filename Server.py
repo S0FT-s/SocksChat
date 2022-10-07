@@ -16,18 +16,13 @@ ServerSocket.bind((Host,Port))
 
 def Client_Handler(conn, addr):
     #o client vai mandar o seu nome primeiro e depois sim pode começar o chat
-    name = conn.recv(64)
-    Clients_names.append(name.decode('utf-8'))
-    ClientsNamesNOBracelets = str(Clients_names)[1:-1]
-    #mudar nome da variavel para ing
-    ClientsNamesNoAspas = ClientsNamesNOBracelets.strip("'")        
-    print(f"New Client connected from {addr} chose the name {name.decode('utf-8')}")
+    print(f"New Client connected")
     while True:
         #Aqui o client vai mandar as suas msg para o server que depois o mesmo vai enviar para todos.
         msg = conn.recv(1024)
+        conn.send(msg)
         msg_Decode = msg.decode('utf-8')
-        conn.send(f'<{ClientsNamesNoAspas}> {msg_Decode}'.encode('utf-8'))
-        print(f'<{ClientsNamesNoAspas}> {msg_Decode}')
+        print(f"{msg_Decode}")
         
         
 def ServerStart():
