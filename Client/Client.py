@@ -7,6 +7,7 @@ Server_Port =  1234
 NickName    = input("Chose your nickname\n -->")
 
 
+
 def MsgReciver(client):
     while True:
         recive_msg = client.recv(1024).decode('utf-8')
@@ -21,5 +22,5 @@ with socket.socket(socket.AF_INET,socket.SOCK_STREAM) as client:
     th1.start()
     while True:
         MSG = str(input())
-        client.send(f"<{NickName} {id}> {MSG}".encode("utf-8"))
+        client.send(f"<{NickName} {id}> {MSG}".encode("utf-8"))        
             
