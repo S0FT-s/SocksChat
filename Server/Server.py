@@ -1,11 +1,13 @@
 #mudar os textos para ing!!
 import socket 
+from time import sleep
 from threading import *
+from encryption import decrypt, encrypt
 
 #Acabar a implementação de encriptação 
 
-Host        = '127.0.0.1'
-Port        = 1234
+Host        = '127.0.0.1' #change if you dont want to use localHost
+Port        = 1234        
 id          = 0
 Newid       = 0
 clients     = []
@@ -15,37 +17,42 @@ NicksList   = []
 ServerSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 ServerSocket.bind((Host,Port))
 
-#MsgSender is going to send the msg for all the clients
+#MsgSender is going encrypt and send the msg for all the clients
 def MsgSender(msg):
+    nonce, ciphertext, tag = encrypt(msg) 
+    print(ciphertext)           
     for conn in clients:
-        conn.send(msg)
-
+        conn.send(nonce)
+        sleep(0.05)
+        conn.send(ciphertext)
+        sleep(0.05)
+        conn.send(tag)
+        
 def NamesIds(conn):
-    #id Part
+    #This part is just to give a id to every user
     global id
     global Newid
     Newid = id + 1
     id_List.append(Newid)
     id = id + 1
     conn.send(f"{id}".encode('utf-8'))
-    #Name Part
+    #this is just to recv the nickname of all users connect
     global Names
     name  = conn.recv(4024)
     NicksList.append(name.decode('utf-8'))
 
 
 def Client_Handler(conn, addr):
-    #o client vai mandar o seu nome primeiro e depois sim pode começar o chat
+    #the client will send his name first and then he can start the chat
     NamesIds(conn)
     print(f"New Client connected from {addr}, recive the id of {Newid}")
     while True:
-        #Aqui o client vai mandar as suas msg para o server que depois o mesmo vai enviar para todos.
-        msg = conn.recv(4024)
-        #msg_Decode = msg.decode('utf-8')
-        #print(f"{msg_Decode}")
-        print(msg)
-        MsgSender(msg)
-            
+        #Here the client will send his messages to the server which will then send them to everyone.
+        nonce       = conn.recv(1024)
+        ciphertext  = conn.recv(1024)
+        tag         = conn.recv(1024)
+        msg         = decrypt(nonce, ciphertext, tag)
+        MsgSender(msg)        
               
 def ServerStart():
     ServerSocket.listen(5)

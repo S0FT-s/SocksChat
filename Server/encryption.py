@@ -20,16 +20,3 @@ def decrypt(nonce, ciphertext, tag):
         return plaintext.decode('ascii')
     except:
         return False
-
-    
-
-    #PARA REMOVER
-#nonce, ciphertext, tag = encrypt(input('Enter a message: '))
-#plaintext = decrypt(nonce, ciphertext, tag)
-#print(f'cipher text: {ciphertext}')
-#if not plaintext:
-#    print('message is wrong')
-#else:
-#    print(f'plain text: {plaintext}')
-
-#print(plaintext)
