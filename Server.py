@@ -7,7 +7,7 @@ from encryption import decrypt, encrypt
 #Acabar a implementação de encriptação 
 
 Host        = '127.0.0.1' #change if you dont want to use localHost
-Port        = 1234        
+Port        = 1234  
 id          = 0
 Newid       = 0
 clients     = []
@@ -16,6 +16,12 @@ NicksList   = []
 
 ServerSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 ServerSocket.bind((Host,Port))
+
+
+def Admin():
+    pass
+
+
 
 #MsgSender is going encrypt and send the msg for all the clients
 def MsgSender(msg):
