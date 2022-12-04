@@ -18,15 +18,17 @@ ServerSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 ServerSocket.bind((Host,Port))
 
 
-def Admin():
-    pass
-
+def Admin(conn, name):
+    password = 'sad'
+    if name == 'Admin': #If you want to change the admin name change this
+        with open('passwords.txt' 'r+') as pwd_file:
+            pwd_file.readline()
 
 
 #MsgSender is going encrypt and send the msg for all the clients
 def MsgSender(msg):
     nonce, ciphertext, tag = encrypt(msg) 
-    print(ciphertext)           
+    print(msg)           
     for conn in clients:
         conn.send(nonce)
         sleep(0.05)
@@ -44,7 +46,7 @@ def NamesIds(conn):
     conn.send(f"{id}".encode('utf-8'))
     #this is just to recv the nickname of all users connect
     global Names
-    name  = conn.recv(4024)
+    name  = conn.recv(1024)
     NicksList.append(name.decode('utf-8'))
 
 

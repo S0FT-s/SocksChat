@@ -1,9 +1,11 @@
 from Crypto.Cipher import AES
-#esta a funcionar so falta implementar 
+import hashlib
 
 #change the key
 key = b'3777217A25432A462D4A404E63526655'
 
+def hash(msg):
+    return hashlib.sha256(msg.encode('ascii')).hexdigest()
 
 def encrypt(msg):
     cipher = AES.new(key, AES.MODE_EAX)
@@ -20,3 +22,4 @@ def decrypt(nonce, ciphertext, tag):
         return plaintext.decode('ascii')
     except:
         return False
+
