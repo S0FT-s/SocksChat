@@ -17,14 +17,6 @@ NicksList   = []
 ServerSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 ServerSocket.bind((Host,Port))
 
-
-def Admin(conn, name):
-    password = 'sad'
-    if name == 'Admin': #If you want to change the admin name change this
-        with open('passwords.txt' 'r+') as pwd_file:
-            pwd_file.readline()
-
-
 #MsgSender is going encrypt and send the msg for all the clients
 def MsgSender(msg):
     nonce, ciphertext, tag = encrypt(msg) 
@@ -56,12 +48,16 @@ def Client_Handler(conn, addr):
     print(f"New Client connected from {addr}, recive the id of {Newid}")
     while True:
         #Here the client will send his messages to the server which will then send them to everyone.
-        nonce       = conn.recv(1024)
-        ciphertext  = conn.recv(1024)
-        tag         = conn.recv(1024)
-        msg         = decrypt(nonce, ciphertext, tag)
-        MsgSender(msg)        
-              
+        #the try is need to make the server not crash when someone leaves
+        try:
+            nonce       = conn.recv(1024)
+            ciphertext  = conn.recv(1024)
+            tag         = conn.recv(1024)
+            msg         = decrypt(nonce, ciphertext, tag)
+            MsgSender(msg)        
+        except:
+            pass  
+
 def ServerStart():
     ServerSocket.listen(5)
     print("Server is now listening")
@@ -69,6 +65,6 @@ def ServerStart():
         conn, addr = ServerSocket.accept()
         clients.append(conn)
         th1 = Thread(target=Client_Handler, args=(conn,addr))
-        th1.start()    
+        th1.start()        
 
 ServerStart()
