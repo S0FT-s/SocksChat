@@ -7,7 +7,7 @@ from encryption import decrypt, encrypt
 #Acabar a implementação de encriptação 
 
 Host        = '127.0.0.1' #change if you dont want to use localHost
-Port        = 1234  
+Port        = 1234        #change but not use a common port
 id          = 0
 Newid       = 0
 clients     = []

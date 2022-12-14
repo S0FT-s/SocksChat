@@ -1,11 +1,9 @@
 from Crypto.Cipher import AES
-import hashlib
+from time import ctime
+
 
 #change the key
 key = b'3777217A25432A462D4A404E63526655'
-
-def hash(msg):
-    return hashlib.sha256(msg.encode('ascii')).hexdigest()
 
 def encrypt(msg):
     cipher = AES.new(key, AES.MODE_EAX)
